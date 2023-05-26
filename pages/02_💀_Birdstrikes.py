@@ -40,7 +40,7 @@ with echo_expander(code_location="above", label="code ⚡️"):
         .encode(
             y = alt.X('Wildlife Size', sort='-x'),
             x = 'count()',
-            color = alt.condition(click, 'Wildlife Size', alt.value("lightgray"))
+            color = alt.condition(click, alt.Color('Wildlife Size:O'), alt.value("lightgray"))
         )
         .properties(
             width = 550,
@@ -49,3 +49,42 @@ with echo_expander(code_location="above", label="code ⚡️"):
     )
     combine = line_chart & bar_chart
 st.altair_chart(combine, use_container_width=True)
+st.divider()
+
+st.subheader('Birdstrike count by Airport & Aircraft Type')
+with echo_expander(code_location="above", label="code ⚡️"):
+    click_1 = alt.selection_single(fields=['Airport Name'])
+    top_n_aircraft = df['Aircraft Make Model'].value_counts().index[:10]
+    top_n_airport = df['Airport Name'].value_counts().index[:10]
+    line = (
+        alt.Chart(df[df['Aircraft Make Model'].isin(top_n_aircraft)])
+        .mark_bar()
+        .encode(
+            x = alt.X('count():Q'),
+            y = alt.Y('year(Flight Date)'),
+            color = alt.Color('Aircraft Make Model:N'),
+            order = alt.Order('count()', sort='descending')
+        )
+        .transform_filter(click_1)
+        .properties(
+            width = 500
+        )
+    )
+    bar = (
+        alt.Chart(df[df['Airport Name'].isin(top_n_airport)])
+        .mark_bar()
+        .encode(
+            x = alt.X('Airport Name', sort='-y'),
+            y = 'count()',
+            color = alt.condition(click_1, alt.value('indigo'), alt.value('lightgray'))
+        )
+        .properties(
+            selection = click_1,
+            width = 500
+        )
+    )
+    combine = line & bar
+st.altair_chart(combine, use_container_width=True)
+
+
+

@@ -3,7 +3,7 @@ import altair as alt
 from vega_datasets import data
 import pandas as pd
 
-st.title('Data Viz')
+st.title('Interactive Data Viz')
 
 '''
  This demo uses data from [Vega Datasets](https://github.com/vega/vega-datasets/tree/main/data) to visualize different plot types
