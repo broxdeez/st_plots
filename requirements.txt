@@ -2,3 +2,4 @@ streamlit
 altair
 vega-datasets
 plotly-express
+streamlit-extras
