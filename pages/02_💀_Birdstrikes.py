@@ -85,6 +85,7 @@ with echo_expander(code_location="above", label="code ⚡️"):
     )
     combine = line & bar
 st.altair_chart(combine, use_container_width=True)
+st.divider()
 
 
 
